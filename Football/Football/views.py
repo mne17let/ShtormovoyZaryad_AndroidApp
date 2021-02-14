@@ -3,12 +3,11 @@ from django.shortcuts import render
 from django.views import View
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-#from django.middleware.csrf import CsrfViewMiddleware
 from django.views.decorators.csrf import ensure_csrf_cookie, get_token, requires_csrf_token, csrf_exempt
 from django.contrib.auth.views import LoginView
 from django.views.generic import CreateView
-#from django.template.context_processors import csrf
 from django.contrib.auth import login
+from django.core import validators
 
 
 class Login(LoginView):
@@ -24,16 +23,41 @@ class Login(LoginView):
     def get(self, request):
         h = HttpResponse(status=200)
         csrf_token = get_token(request)
-        #h.set_cookie('csrfmiddlewaretoken', value=csrf_token)
-        #request.setRequestHeader("X-CSRFToken", csrftoken);
-        #h["X-CSRFToken"] =  csrf_token;
         return h
 
 
 class Registration(CreateView):
     def post(self, request):
-        if request.POST['password'] != request.POST['again_pass']:
-            return HttpResponse(status=403)
-        user = User.objects.create_user(request.POST['username'], request.POST['mail'], request.POST['password'])
-        user.save()
-        return HttpResponseRedirect('/login/')
+        try:
+            if request.POST['password'] != request.POST['again_pass']:
+                return HttpResponse(content="passwords don\'t match", status=405)
+        except:
+            return HttpResponse('bad password', status=405)
+
+        try:
+            validators.validate_email(request.POST['mail'])
+        except:
+            return HttpResponse(content='bad email', status=405)
+
+        try:
+            validators.validate_slug(request.POST['password'])
+        except:
+            return HttpResponse(content='bad password', status=405)
+
+        try:
+            validators.validate_slug(request.POST['username'])
+        except:
+            return HttpResponse(content='bad login', status=405)
+
+        try:
+            if User.objects.filter(username=request.POST['username']).exists():
+                return HttpResponse(content='user already exists', status=405)
+        except:
+            pass
+
+        try:
+            user = User.objects.create_user(request.POST['username'], request.POST['mail'], request.POST['password'])
+            user.save()
+            return HttpResponse(content='user is successfully created', status=200)
+        except:
+            HttpResponse('something went wrong', status=406)
