@@ -8,6 +8,8 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import CreateView
 from django.contrib.auth import login
 from django.core import validators
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 
 class Login(LoginView):
@@ -40,9 +42,9 @@ class Registration(CreateView):
             return HttpResponse(content='bad email', status=405)
 
         try:
-            validators.validate_slug(request.POST['password'])
+            validate_password(request.POST['password'])
         except:
-            return HttpResponse(content='bad password', status=405)
+            return HttpResponse('bad password', status=405)
 
         try:
             validators.validate_slug(request.POST['username'])
