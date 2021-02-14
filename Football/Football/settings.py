@@ -123,4 +123,4 @@ STATIC_URL = '/static/'
 
 #LOGIN_REDIRECT_URL = '/mobile/start'
 
-CSRF_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True

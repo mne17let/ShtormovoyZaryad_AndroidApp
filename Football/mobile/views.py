@@ -4,10 +4,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 
 
-class Start(LoginRequiredMixin, View):
+class Start(View):
     def get(self, request):
-        return HttpResponse(status=200)
-
+        if request.user.is_authenticated:
+            return HttpResponse(content="Yes", status=200)
+        else:
+            return HttpResponse(status=405)
 '''
 class some_view(View):
     def post(self, request):
