@@ -6,7 +6,7 @@ import android.widget.Toast
 import com.smallgroup.login.R
 
 class MainActivity : AppCompatActivity(R.layout.activity_main),
-        LoginFragment.OnLogincFragmentListener, RegistrationFragmnet.OnRegistrFragmentListener {
+        LoginFragment.OnLoginFragmentListener, RegistrationFragmnet.OnRegistrFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
