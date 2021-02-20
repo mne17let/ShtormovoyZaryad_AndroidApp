@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie, get_token, requires_csrf_token, csrf_exempt
 from django.contrib.auth.views import LoginView
 from django.views.generic import CreateView
-from django.contrib.auth import login
 from django.core import validators
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -34,26 +33,26 @@ class Registration(CreateView):
             if request.POST['password'] != request.POST['again_pass']:
                 return HttpResponse(content="passwords don\'t match", status=405)
         except:
-            return HttpResponse('bad password', status=405)
+            return HttpResponse('bad password', status=406)
 
         try:
             validators.validate_email(request.POST['mail'])
         except:
-            return HttpResponse(content='bad email', status=405)
+            return HttpResponse(content='bad email', status=407)
 
         try:
             validate_password(request.POST['password'])
         except:
-            return HttpResponse('bad password', status=405)
+            return HttpResponse('bad password', status=408)
 
         try:
             validators.validate_slug(request.POST['username'])
         except:
-            return HttpResponse(content='bad login', status=405)
+            return HttpResponse(content='bad login', status=409)
 
         try:
             if User.objects.filter(username=request.POST['username']).exists():
-                return HttpResponse(content='user already exists', status=405)
+                return HttpResponse(content='user already exists', status=410)
         except:
             pass
 
@@ -62,4 +61,10 @@ class Registration(CreateView):
             user.save()
             return HttpResponse(content='user is successfully created', status=200)
         except:
-            HttpResponse('something went wrong', status=406)
+            HttpResponse('something went wrong', status=411)
+
+class Logout(LoginView):
+    def get(self, request):
+        logout(request)
+        return HttpResponse(200)
+
