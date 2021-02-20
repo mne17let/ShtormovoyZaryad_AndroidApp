@@ -1,57 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.smallgroup.login.ui.login.LoginViewModel" />
     </data>
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="match_parent">
 
-
-        <EditText
-            android:id="@+id/login_email"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/field_username"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
-            android:hint="E-mail"
-            android:text="@{viewModel.email}"
+            android:layout_marginTop="225dp"
+            app:error="@{viewModel.emailValidator.error}"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            android:inputType="textEmailAddress" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress"
+                android:text="@={viewModel.email}" />
 
-        <EditText
-            android:id="@+id/login_password"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/field_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
-            android:layout_below="@id/login_email"
-            android:hint="Password"
-            android:text="@{viewModel.password}"
-            android:inputType="textPassword" />
+            app:error="@{viewModel.passwordValidator.error}"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/field_username">
 
-        <Button
-            android:id="@+id/login_button"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:text="@={viewModel.password}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_log_in"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="70dp"
-            android:layout_marginTop="30dp"
-            android:layout_below="@id/login_password"
-            android:textSize="16sp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
             android:enabled="@{viewModel.valid}"
-            android:text="Войти"/>
+            android:text="Войти"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/field_password" />
 
-        <Button
-            android:id="@+id/reg_button"
-            style="@style/Widget.AppCompat.Button"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_sign_up"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@id/login_button"
-            android:layout_marginHorizontal="70dp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="50dp"
             android:text="Регистрация"
-            android:textSize="16sp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_log_in"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

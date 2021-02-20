@@ -33,15 +33,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.lifecycleOwner = viewLifecycleOwner
         fragmentBinding = binding
 
-
-        binding.regButton.setOnClickListener(View.OnClickListener {
+        binding.buttonSignUp.setOnClickListener(View.OnClickListener {
             Toast.makeText(
                     activity, "Регистрация",
                     Toast.LENGTH_SHORT).show()
             listener?.openRegistrationForm()
         })
 
-        binding.loginButton.setOnClickListener(View.OnClickListener {
+
+        binding.buttonLogIn.setOnClickListener(View.OnClickListener {
             listener?.login()
         })
 
@@ -52,32 +52,5 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onDestroyView()
     }
 
-
-
-//    override fun onCreateView(
-//            inflater: LayoutInflater,
-//            container: ViewGroup?,
-//            savedInstanceState: Bundle?
-//    ): View? {
-//
-//        val rootView = inflater.inflate(R.layout.fragment_login, container, false)
-//        val listener = activity as OnLoginFragmentListener?
-//        binding = FragmentLoginBinding.bind(rootView)
-//
-//        val reg = rootView.findViewById<Button>(R.id.reg_button)
-//        reg.setOnClickListener(View.OnClickListener {
-//            Toast.makeText(
-//                    activity, "Регистрация",
-//                    Toast.LENGTH_SHORT).show()
-//            listener?.openRegistrationForm()
-//        })
-//
-//        val login = rootView.findViewById<Button>(R.id.login_button)
-//        login.setOnClickListener(View.OnClickListener {
-//            listener?.login()
-//        })
-//
-//        return binding
-//    }
 
 }
