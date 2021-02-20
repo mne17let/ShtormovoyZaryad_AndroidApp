@@ -7,34 +7,41 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.smallgroup.login.R
+import com.smallgroup.login.databinding.FragmentLoginBinding
+import com.smallgroup.login.databinding.FragmentRegistrationBinding
 
 class RegistrationFragmnet : Fragment(R.layout.fragment_registration) {
+
+    private var fragmentBinding: FragmentRegistrationBinding? = null
 
     interface OnRegistrFragmentListener{
         fun registration()
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-
-        val rootView = inflater.inflate(R.layout.fragment_registration, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val listener = activity as OnRegistrFragmentListener?
+        val binding = FragmentRegistrationBinding.bind(view)
+        val signUoViewModel: SignUpViewModel by viewModels()
 
-        val login_button = rootView.findViewById<Button>(R.id.login_button)
-        login_button.setOnClickListener(View.OnClickListener {
+        binding.viewModel = signUoViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        fragmentBinding = binding
+
+        binding.buttonSignUp.setOnClickListener(View.OnClickListener {
             Toast.makeText(
                     activity, "Нажата кнпка Зарегистрироваться",
                     Toast.LENGTH_SHORT).show()
 
-
             listener?.registration()
         })
+    }
 
-        return rootView
+    override fun onDestroy() {
+        fragmentBinding = null
+        super.onDestroy()
     }
 
 }
