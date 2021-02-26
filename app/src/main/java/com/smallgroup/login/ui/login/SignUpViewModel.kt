@@ -4,11 +4,16 @@ import android.util.Patterns
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.smallgroup.login.domain.model.Event
+import com.smallgroup.login.repo.ResponseWrapper
 import com.smallgroup.login.repo.SimpleRepo
+import com.smallgroup.login.ui.BaseViewModel
 
-class SignUpViewModel: ViewModel() {
+class SignUpViewModel: BaseViewModel() {
 
     var repo: SimpleRepo = SimpleRepo()
+
+    val responseLiveData = MutableLiveData<Event<String>>()
 
     val email = MutableLiveData<String>("")
     val emailValidator = LiveDataValidator(email).apply {
@@ -43,7 +48,14 @@ class SignUpViewModel: ViewModel() {
     }
 
     fun signUp(){
-        repo.signUp()
+        requestWithLiveData(responseLiveData) {
+            api.signUp(
+                    password.value.toString(),
+                    password.value.toString(),
+                    email.value.toString(),
+                    username.value.toString()
+            )
+        }
     }
 
     private fun validateForm() {
