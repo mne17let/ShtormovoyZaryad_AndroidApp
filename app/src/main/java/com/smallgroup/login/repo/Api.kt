@@ -9,17 +9,14 @@ import retrofit2.http.Query
 
 interface Api {
 
-    @GET("login")
+    @GET("/mobile/login/")
     suspend fun login(
 
-    )
+    ): ResponseWrapper<Unit>
 
-    @POST("registration")
+    @POST("/mobile/registration/")
     suspend fun signUp(
-        @Query("password") pass: String,
-        @Query("again_pass") againPass: String,
-        @Query("mail") email: String,
-        @Query("username") username: String
+        @Body user: User
     ): ResponseWrapper<String>
 
 }

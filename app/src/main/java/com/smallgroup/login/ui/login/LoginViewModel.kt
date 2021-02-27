@@ -6,11 +6,16 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.smallgroup.login.domain.model.Event
+import com.smallgroup.login.repo.ResponseWrapper
 import com.smallgroup.login.repo.SimpleRepo
+import com.smallgroup.login.ui.BaseViewModel
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel: BaseViewModel() {
 
     var repo: SimpleRepo = SimpleRepo()
+
+    val responseLiveData = MutableLiveData<Event<Unit>>()
 
     val email = MutableLiveData<String>("")
     val emailValidator = LiveDataValidator(email).apply {
@@ -31,7 +36,9 @@ class LoginViewModel: ViewModel() {
 
 
     fun login(){
-        repo.login("login", "pass")
+        requestWithLiveData(responseLiveData){
+            api.login()
+        }
     }
 
     fun validateForm(){

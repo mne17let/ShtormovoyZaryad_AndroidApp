@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkService {
 
-    private val BASE_URL = "http://mne17let.beget.tech/mobile/"
+    private val BASE_URL = "http://mne17let.beget.tech/"
 
     private val loggingInterceptor = run {
         val httpLoggingInterceptor = HttpLoggingInterceptor()

@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.smallgroup.login.domain.model.Event
+import com.smallgroup.login.domain.model.User
 import com.smallgroup.login.repo.ResponseWrapper
 import com.smallgroup.login.repo.SimpleRepo
 import com.smallgroup.login.ui.BaseViewModel
@@ -50,10 +51,12 @@ class SignUpViewModel: BaseViewModel() {
     fun signUp(){
         requestWithLiveData(responseLiveData) {
             api.signUp(
+                    User(
                     password.value.toString(),
                     password.value.toString(),
                     email.value.toString(),
                     username.value.toString()
+                    )
             )
         }
     }
