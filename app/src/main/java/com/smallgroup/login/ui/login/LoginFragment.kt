@@ -33,17 +33,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.lifecycleOwner = viewLifecycleOwner
         fragmentBinding = binding
 
-        binding.buttonSignUp.setOnClickListener(View.OnClickListener {
+        binding.buttonSignUp.setOnClickListener{
             Toast.makeText(
                     activity, "Регистрация",
                     Toast.LENGTH_SHORT).show()
             listener?.openRegistrationForm()
-        })
+        }
 
 
-        binding.buttonLogIn.setOnClickListener(View.OnClickListener {
+        binding.buttonLogIn.setOnClickListener {
             listener?.login()
-        })
+        }
+
+        loginViewModel.login()
 
     }
 
