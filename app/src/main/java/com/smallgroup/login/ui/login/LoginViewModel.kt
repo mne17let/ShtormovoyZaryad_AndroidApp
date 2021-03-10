@@ -2,20 +2,21 @@ package com.smallgroup.login.ui.login
 
 import android.util.Log
 import android.util.Patterns
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import com.smallgroup.login.domain.model.Event
+import androidx.lifecycle.*
+import com.smallgroup.login.domain.model.Auth
+import com.smallgroup.login.domain.model.Start
 import com.smallgroup.login.repo.ResponseWrapper
 import com.smallgroup.login.repo.SimpleRepo
 import com.smallgroup.login.ui.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginViewModel: BaseViewModel() {
 
     var repo: SimpleRepo = SimpleRepo()
 
-    val responseLiveData = MutableLiveData<Event<Unit>>()
+    val responseLiveData = MutableLiveData<Auth?>()
+    val responseStart = MutableLiveData<Start?>()
 
     val email = MutableLiveData<String>("")
     val emailValidator = LiveDataValidator(email).apply {
@@ -34,12 +35,21 @@ class LoginViewModel: BaseViewModel() {
         valid.addSource(password) {validateForm()}
     }
 
-
-    fun login(){
-        requestWithLiveData(responseLiveData){
-            api.login()
+    fun login() {
+        viewModelScope.launch {
+            val response = repo.login()
+            responseLiveData.postValue(response.value)
         }
     }
+
+    fun start() {
+        viewModelScope.launch {
+            val response = repo.start()
+            responseStart.postValue(response.value)
+        }
+    }
+
+
 
     fun validateForm(){
         val validators = listOf(emailValidator, passwordValidator)

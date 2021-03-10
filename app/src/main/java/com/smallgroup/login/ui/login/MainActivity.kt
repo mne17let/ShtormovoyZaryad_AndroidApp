@@ -6,7 +6,7 @@ import android.widget.Toast
 import com.smallgroup.login.R
 
 class MainActivity : AppCompatActivity(R.layout.activity_main),
-        LoginFragment.OnLoginFragmentListener, RegistrationFragmnet.OnRegistrFragmentListener {
+        LoginFragment.OnLoginFragmentListener, RegistrationFragment.OnRegistrFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
     }
 
     override fun openRegistrationForm() {
-        var fragment = RegistrationFragmnet()
+        var fragment = RegistrationFragment()
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container_view,
             fragment,
             fragment.javaClass.simpleName)

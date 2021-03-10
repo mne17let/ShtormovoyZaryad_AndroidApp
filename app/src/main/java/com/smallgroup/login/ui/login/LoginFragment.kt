@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.smallgroup.login.R
 import com.smallgroup.login.databinding.FragmentLoginBinding
@@ -45,7 +46,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             listener?.login()
         }
 
+        loginViewModel.start()
+        loginViewModel.responseStart.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(
+                activity, "$it",
+                Toast.LENGTH_SHORT).show()
+        })
+
         loginViewModel.login()
+        loginViewModel.responseLiveData.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(
+                    activity, "$it",
+                    Toast.LENGTH_SHORT).show()
+        })
 
     }
 
