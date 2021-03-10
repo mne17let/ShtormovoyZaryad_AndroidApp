@@ -12,9 +12,8 @@ import androidx.lifecycle.Observer
 import com.smallgroup.login.R
 import com.smallgroup.login.databinding.FragmentLoginBinding
 import com.smallgroup.login.databinding.FragmentRegistrationBinding
-import com.smallgroup.login.domain.model.Status
 
-class RegistrationFragmnet : Fragment(R.layout.fragment_registration) {
+class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
     private var fragmentBinding: FragmentRegistrationBinding? = null
     val signUoViewModel: SignUpViewModel by viewModels()
@@ -43,27 +42,13 @@ class RegistrationFragmnet : Fragment(R.layout.fragment_registration) {
 
     fun observeSignUp(){
         signUoViewModel.responseLiveData.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Status.SUCCESS -> viewOnSuccess(it.data)
-                Status.ERROR -> viewOnError(it.error, it.data)
-            }
+            Toast.makeText(
+                    activity, "Регистрация + $it",
+                    Toast.LENGTH_SHORT).show()
+            listener?.registration()
         })
     }
 
-    private fun viewOnError(error: Error?, data: String?) {
-        //TODO
-        Toast.makeText(
-                activity, "Ошибка error: $error data: $data",
-                Toast.LENGTH_SHORT).show()
-    }
-
-    fun viewOnSuccess(data: String?){
-        //TODO
-        Toast.makeText(
-                activity, "Регистрация + $data",
-                Toast.LENGTH_SHORT).show()
-        listener?.registration()
-    }
 
     override fun onDestroy() {
         fragmentBinding = null

@@ -4,38 +4,46 @@ import android.util.Patterns
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.smallgroup.login.domain.model.Event
+import androidx.lifecycle.viewModelScope
 import com.smallgroup.login.domain.model.User
 import com.smallgroup.login.repo.ResponseWrapper
 import com.smallgroup.login.repo.SimpleRepo
 import com.smallgroup.login.ui.BaseViewModel
+import kotlinx.coroutines.launch
 
 class SignUpViewModel: BaseViewModel() {
 
     var repo: SimpleRepo = SimpleRepo()
 
-    val responseLiveData = MutableLiveData<Event<String>>()
+    val responseLiveData = MutableLiveData<String>()
 
-    val email = MutableLiveData<String>("")
+    val email = MutableLiveData<String>("user@user.ru")
     val emailValidator = LiveDataValidator(email).apply {
         addRule("email is required") { it.isNullOrBlank() }
         addRule("email is not corrected") {!Patterns.EMAIL_ADDRESS.matcher(it).matches()}
     }
 
-    val username = MutableLiveData<String>("")
+    val username = MutableLiveData<String>("user1")
     val usernameValidator = LiveDataValidator(username).apply {
         addRule("username is required") { it.isNullOrBlank() }
+        addRule("username is short (less 3 chars)") { it?.length!! < 3}
+        addRule("username is not correct") { !"^[A-Za-z0-9_]+\$".toRegex().matches(
+                it.toString()
+        ) }
     }
 
-    val password = MutableLiveData<String>("")
+    val password = MutableLiveData<String>("slojniypass1")
     val passwordValidator = LiveDataValidator(password).apply {
         addRule("password is required") { it.isNullOrBlank() }
+        addRule("password is not correct") { !"^[A-Za-z0-9]+$".toRegex().matches(
+                it.toString()
+        ) }
+        addRule("password is short (less 8 chars)") { it?.length!! < 8}
     }
 
-    val passwordCheck = MutableLiveData<String>("")
+    val passwordCheck = MutableLiveData<String>("slojniypass1")
     val passwordCheckValidator = LiveDataValidator(password).apply {
         addRule("password is required") { it.isNullOrBlank() }
-        addRule("passwords is not match") { !password.value.equals(it) }
     }
 
     val valid = MediatorLiveData<Boolean>()
@@ -49,15 +57,16 @@ class SignUpViewModel: BaseViewModel() {
     }
 
     fun signUp(){
-        requestWithLiveData(responseLiveData) {
-            api.signUp(
+        viewModelScope.launch {
+            val response = repo.signUp(
                     User(
-                    password.value.toString(),
-                    password.value.toString(),
-                    email.value.toString(),
-                    username.value.toString()
+                            password.value.toString(),
+                            password.value.toString(),
+                            email.value.toString(),
+                            username.value.toString()
                     )
             )
+            responseLiveData.postValue(response.value)
         }
     }
 
