@@ -1,17 +1,15 @@
 package com.smallgroup.login.repo
 
 import androidx.lifecycle.MutableLiveData
-import com.smallgroup.login.domain.model.Auth
-import com.smallgroup.login.domain.model.Start
-import com.smallgroup.login.domain.model.User
+import com.smallgroup.login.domain.model.*
 
-class SimpleRepo: BaseRepository() {
+class RetrofitRepo: BaseRepository() {
 
     var api: Api = NetworkService.retrofitService()
 
-    suspend fun login(): MutableLiveData<Auth?> {
+    suspend fun login(body: LoginBody): MutableLiveData<Auth?> {
         val response = safeApiCall(
-            call = { api.login().await() },
+            call = { api.login(body).await() },
             errorMessage = "Login error"
         )
         return MutableLiveData(response)
@@ -25,7 +23,7 @@ class SimpleRepo: BaseRepository() {
         return MutableLiveData(response)
     }
 
-    suspend fun signUp(user: User): MutableLiveData<String?> {
+    suspend fun signUp(user: User): MutableLiveData<AuthUser?> {
         val response = safeApiCall(
                 call = { api.signUp(user).await() },
                 errorMessage = "Sign up error"

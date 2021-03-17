@@ -1,22 +1,18 @@
 package com.smallgroup.login.ui.login
 
-import android.util.Log
-import android.util.Patterns
 import androidx.lifecycle.*
 import com.smallgroup.login.domain.model.Auth
+import com.smallgroup.login.domain.model.LoginBody
 import com.smallgroup.login.domain.model.Start
-import com.smallgroup.login.repo.ResponseWrapper
-import com.smallgroup.login.repo.SimpleRepo
+import com.smallgroup.login.repo.RetrofitRepo
 import com.smallgroup.login.ui.BaseViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel: BaseViewModel() {
 
-    var repo: SimpleRepo = SimpleRepo()
+    var repo: RetrofitRepo = RetrofitRepo()
 
     val responseLiveData = MutableLiveData<Auth?>()
-    val responseStart = MutableLiveData<Start?>()
 
     val email = MutableLiveData<String>("")
     val emailValidator = LiveDataValidator(email).apply {
@@ -25,7 +21,6 @@ class LoginViewModel: BaseViewModel() {
     val password = MutableLiveData<String>("")
     val passwordValidator = LiveDataValidator(password).apply {
         addRule("password is required") { it.isNullOrBlank() }
-        addRule("password length must be more 5") { it?.length != 5}
     }
     val valid = MediatorLiveData<Boolean>()
 
@@ -37,19 +32,13 @@ class LoginViewModel: BaseViewModel() {
 
     fun login() {
         viewModelScope.launch {
-            val response = repo.login()
+            val response = repo.login(LoginBody(
+                    email.value.toString(),
+                    password.value.toString()
+            ))
             responseLiveData.postValue(response.value)
         }
     }
-
-    fun start() {
-        viewModelScope.launch {
-            val response = repo.start()
-            responseStart.postValue(response.value)
-        }
-    }
-
-
 
     fun validateForm(){
         val validators = listOf(emailValidator, passwordValidator)

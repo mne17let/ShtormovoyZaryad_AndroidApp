@@ -43,17 +43,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
 
         binding.buttonLogIn.setOnClickListener {
-            listener?.login()
+            loginViewModel.login()
+            //listener?.login()
         }
 
-        loginViewModel.start()
-        loginViewModel.responseStart.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(
-                activity, "$it",
-                Toast.LENGTH_SHORT).show()
-        })
-
-        loginViewModel.login()
         loginViewModel.responseLiveData.observe(viewLifecycleOwner, Observer {
             Toast.makeText(
                     activity, "$it",
