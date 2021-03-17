@@ -1,9 +1,7 @@
 package com.smallgroup.login.repo
 
 
-import com.smallgroup.login.domain.model.Auth
-import com.smallgroup.login.domain.model.Start
-import com.smallgroup.login.domain.model.User
+import com.smallgroup.login.domain.model.*
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.Body
@@ -13,9 +11,9 @@ import retrofit2.http.Query
 
 interface Api {
 
-    @GET("/mobile/login/")
+    @POST("/auth/token/login/")
     fun login(
-
+        @Body login: LoginBody
     ): Deferred<Response<Auth>>
 
     @GET("/mobile/start/")
@@ -23,9 +21,9 @@ interface Api {
 
     ): Deferred<Response<Start>>
 
-    @POST("/mobile/registration/")
+    @POST("/auth/users/")
     fun signUp(
         @Body user: User
-    ):Deferred<Response<String>>
+    ):Deferred<Response<AuthUser>>
 
 }

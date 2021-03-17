@@ -3,19 +3,18 @@ package com.smallgroup.login.ui.login
 import android.util.Patterns
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smallgroup.login.domain.model.AuthUser
 import com.smallgroup.login.domain.model.User
-import com.smallgroup.login.repo.ResponseWrapper
-import com.smallgroup.login.repo.SimpleRepo
+import com.smallgroup.login.repo.RetrofitRepo
 import com.smallgroup.login.ui.BaseViewModel
 import kotlinx.coroutines.launch
 
 class SignUpViewModel: BaseViewModel() {
 
-    var repo: SimpleRepo = SimpleRepo()
+    var repo: RetrofitRepo = RetrofitRepo()
 
-    val responseLiveData = MutableLiveData<String>()
+    val responseLiveData = MutableLiveData<AuthUser?>()
 
     val email = MutableLiveData<String>("user@user.ru")
     val emailValidator = LiveDataValidator(email).apply {
@@ -60,7 +59,6 @@ class SignUpViewModel: BaseViewModel() {
         viewModelScope.launch {
             val response = repo.signUp(
                     User(
-                            password.value.toString(),
                             password.value.toString(),
                             email.value.toString(),
                             username.value.toString()
