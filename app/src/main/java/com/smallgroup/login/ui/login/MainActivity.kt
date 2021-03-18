@@ -35,9 +35,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main),
     }
 
     override fun registration() {
-        Toast.makeText(
-                this, "Вход + смена экрана",
-                Toast.LENGTH_SHORT).show()
-        finish()
+        var fragment = LoginFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container_view,
+            fragment,
+            fragment.javaClass.simpleName)
+        .commit()
     }
 }
