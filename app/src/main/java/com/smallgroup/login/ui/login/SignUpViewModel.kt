@@ -16,13 +16,13 @@ class SignUpViewModel: BaseViewModel() {
 
     val responseLiveData = MutableLiveData<AuthUser?>()
 
-    val email = MutableLiveData<String>("user@user.ru")
+    val email = MutableLiveData<String>()
     val emailValidator = LiveDataValidator(email).apply {
         addRule("email is required") { it.isNullOrBlank() }
         addRule("email is not corrected") {!Patterns.EMAIL_ADDRESS.matcher(it).matches()}
     }
 
-    val username = MutableLiveData<String>("user1")
+    val username = MutableLiveData<String>()
     val usernameValidator = LiveDataValidator(username).apply {
         addRule("username is required") { it.isNullOrBlank() }
         addRule("username is short (less 3 chars)") { it?.length!! < 3}
@@ -31,18 +31,19 @@ class SignUpViewModel: BaseViewModel() {
         ) }
     }
 
-    val password = MutableLiveData<String>("slojniypass1")
+    val password = MutableLiveData<String>()
     val passwordValidator = LiveDataValidator(password).apply {
         addRule("password is required") { it.isNullOrBlank() }
-        addRule("password is not correct") { !"^[A-Za-z0-9]+$".toRegex().matches(
+        addRule("password is not corrected") { !"^[A-Za-z0-9]+$".toRegex().matches(
                 it.toString()
         ) }
         addRule("password is short (less 8 chars)") { it?.length!! < 8}
     }
 
-    val passwordCheck = MutableLiveData<String>("slojniypass1")
-    val passwordCheckValidator = LiveDataValidator(password).apply {
+    val passwordCheck = MutableLiveData<String>()
+    val passwordCheckValidator = LiveDataValidator(passwordCheck).apply {
         addRule("password is required") { it.isNullOrBlank() }
+        addRule("passwrods is not matched") {!it.equals(password.value)}
     }
 
     val valid = MediatorLiveData<Boolean>()
