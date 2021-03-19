@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="225dp"
+            android:layout_marginTop="200dp"
             app:error="@{viewModel.emailValidator.error}"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
