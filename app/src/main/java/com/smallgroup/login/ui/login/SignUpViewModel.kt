@@ -26,8 +26,11 @@ class SignUpViewModel: BaseViewModel() {
     val usernameValidator = LiveDataValidator(username).apply {
         addRule("username is required") { it.isNullOrBlank() }
         addRule("username is short (less 3 chars)") { it?.length!! < 3}
-        addRule("username is not correct") { !"^[A-Za-z0-9_]+\$".toRegex().matches(
-                it.toString()
+        addRule("usernam is not corrected") { !"^_+\$".toRegex().matches(
+            it.toString()
+        )}
+        addRule("username is not corrected") { !"^[A-Za-z0-9_]+\$".toRegex().matches(
+            it.toString()
         ) }
     }
 
