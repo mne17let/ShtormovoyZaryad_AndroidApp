@@ -18,35 +18,39 @@ class SignUpViewModel: BaseViewModel() {
 
     val email = MutableLiveData<String>()
     val emailValidator = LiveDataValidator(email).apply {
-        addRule("email is required") { it.isNullOrBlank() }
-        addRule("email is not corrected") {!Patterns.EMAIL_ADDRESS.matcher(it).matches()}
+        addRule("Поле не заполнено.") { it.isNullOrBlank() }
+        addRule("Неправильно указана почта.") {!Patterns.EMAIL_ADDRESS.matcher(it).matches()}
     }
 
     val username = MutableLiveData<String>()
     val usernameValidator = LiveDataValidator(username).apply {
-        addRule("username is required") { it.isNullOrBlank() }
-        addRule("username is short (less 3 chars)") { it?.length!! < 3}
-        addRule("username is not corrected") { "^_+\$".toRegex().matches(
+        addRule("Поле не заполнено.") { it.isNullOrBlank() }
+        addRule("Минимальная длина никнейма - 3 сивола.") { it?.length!! < 3}
+        addRule("Введенный никнейм не допустим.") { "^_+\$".toRegex().matches(
             it.toString()
         )}
-        addRule("username is not corrected") { !"^[A-Za-z0-9_]+\$".toRegex().matches(
+        addRule("Введенный никнейм не допустим.") { !"^[A-Za-z0-9_]+\$".toRegex().matches(
             it.toString()
         ) }
     }
 
     val password = MutableLiveData<String>()
     val passwordValidator = LiveDataValidator(password).apply {
-        addRule("password is required") { it.isNullOrBlank() }
-        addRule("password is not corrected") { !"^[A-Za-z0-9]+$".toRegex().matches(
+        addRule("Поле не заполнено") { it.isNullOrBlank() }
+        addRule("Пароль может содержать только латинские буквы, цифры и _.") { !"^[A-Za-z0-9]+$".toRegex().matches(
                 it.toString()
         ) }
-        addRule("password is short (less 8 chars)") { it?.length!! < 8}
+        addRule("Пароль не должен сожержать только цифры.") { "^[0-9]+$".toRegex().matches(
+                it.toString()
+        ) }
+        addRule("Пароль не может быть таким же как и никнейм.") {!it.equals(username.value)}
+        addRule("Минимальная длинная пароля - 5 символов.") { it?.length!! <= 5}
     }
 
     val passwordCheck = MutableLiveData<String>()
     val passwordCheckValidator = LiveDataValidator(passwordCheck).apply {
-        addRule("password is required") { it.isNullOrBlank() }
-        addRule("passwrods is not matched") {!it.equals(password.value)}
+        addRule("Поле не заполнено.") { it.isNullOrBlank() }
+        addRule("Пароли не совпадают.") {!it.equals(password.value)}
     }
 
     val valid = MediatorLiveData<Boolean>()
