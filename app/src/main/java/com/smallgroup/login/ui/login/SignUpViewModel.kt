@@ -43,13 +43,13 @@ class SignUpViewModel: BaseViewModel() {
         addRule("Пароль не должен сожержать только цифры.") { "^[0-9]+$".toRegex().matches(
                 it.toString()
         ) }
-        addRule("Пароль не может быть таким же как и никнейм.") {!it.equals(username.value)}
+        addRule("Пароль не может быть таким же как и никнейм.") {it.equals(username.value)}
         addRule("Минимальная длинная пароля - 5 символов.") { it?.length!! <= 5}
     }
 
     val passwordCheck = MutableLiveData<String>()
     val passwordCheckValidator = LiveDataValidator(passwordCheck).apply {
-        addRule("Поле не заполнено.") { it.isNullOrBlank() }
+        addRule("Полес не заполнено.") { it.isNullOrBlank() }
         addRule("Пароли не совпадают.") {!it.equals(password.value)}
     }
 
